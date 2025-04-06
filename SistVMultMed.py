@@ -114,8 +114,13 @@ def main():
                 nm=int(input("Ingrese cantidad de medicamentos: "))
                 lista_med=[]
 
-                for i in range(0,nm):
+                for i in range(nm):
+                    #Comprobamos que el medicamento no haya sido ingresado antes
                     nombre_medicamentos = input("Ingrese el nombre del medicamento: ")
+                    if any(med.verNombre().lower() == nombre_medicamentos.lower() for med in lista_med):
+                        print(f"El medicamento {nombre_medicamentos} ya fue ingresado, por favor ingrese otro.")
+                        #Omitir si ya existe el medicamento
+                        continue
                     dosis =int(input("Ingrese la dosis: "))
                     medicamento = Medicamento()
                     medicamento.asignarNombre(nombre_medicamentos)
