@@ -4,6 +4,7 @@ class Paciente:
         self.__cedula = 0 
         self.__genero = '' 
         self.__servicio = '' 
+        print('Esto es para probar si hizo el fork')
               
     #metodos get    
     def verNombre(self):
