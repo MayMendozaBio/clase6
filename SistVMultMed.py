@@ -51,7 +51,10 @@ class Mascota:
     
 class sistemaV:
     def __init__(self):
-        self.__lista_mascotas = []
+        self.__lista_mascotas = [] #inicializo la lista de mascotas vacia
+        self.__caninos = {}
+        self.__felinos = {}
+
     
     def verificarExiste(self,historia):
         for m in self.__lista_mascotas:
@@ -65,6 +68,16 @@ class sistemaV:
     
     def ingresarMascota(self,mascota):
         self.__lista_mascotas.append(mascota) 
+
+        historia = mascota.verHistoria()
+        tipo = mascota.verTipo().lower()
+
+        if tipo == "canino":
+            if historia not in self.__caninos:
+                self.__caninos[historia] = mascota
+        elif tipo == "felino":
+            if historia not in self.__felinos:
+                self.__felinos[historia] = mascota
    
 
     def verFechaIngreso(self,historia):
@@ -81,10 +94,22 @@ class sistemaV:
                 return masc.verLista_Medicamentos() 
         return None
     
+    #Completamente opcional
+    def verCantitadCaninos(self):
+        return len(self.__caninos)
+    def verCantitadFelinos(self):
+        return len(self.__felinos)
+    
     def eliminarMascota(self, historia):
         for masc in self.__lista_mascotas:
             if historia == masc.verHistoria():
-                self.__lista_mascotas.remove(masc)  #opcion con el pop
+                self.__lista_mascotas.remove(masc)
+                
+                tipo = masc.verTipo().lower()
+                if tipo == "canino" and historia in self.__caninos:
+                    del self.__caninos[historia]
+                elif tipo == "felino" and historia in self.__felinos:
+                    del self.__felinos[historia] 
                 return True  #eliminado con exito
         return False 
 
@@ -98,7 +123,9 @@ def main():
                        \n3- Ver número de mascotas en el servicio 
                        \n4- Ver medicamentos que se están administrando
                        \n5- Eliminar mascota 
-                       \n6- Salir 
+                       \n6- Ver cantidad de caninos
+                       \n7- Ver cantidad de felinos
+                       \n8- Salir 
                        \nUsted ingresó la opción: ''' ))
         if menu==1: # Ingresar una mascota 
             if servicio_hospitalario.verNumeroMascotas() >= 10:
@@ -170,8 +197,16 @@ def main():
                 print("Mascota eliminada del sistema con exito")
             else:
                 print("No se ha podido eliminar la mascota")
+
+        elif menu == 6:
+            cantidad_caninos = servicio_hospitalario.verCantitadCaninos()
+            print(f"Cantidad de caninos en el sistema: {cantidad_caninos}")
+
+        elif menu == 7:
+            cantidad_felinos = servicio_hospitalario.verCantitadFelinos()
+            print(f"Cantidad de felinos en el sistema: {cantidad_felinos}")
         
-        elif menu==6:
+        elif menu==8:
             print("Usted ha salido del sistema de servicio de hospitalización...")
             break
         
