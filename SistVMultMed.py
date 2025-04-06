@@ -95,6 +95,19 @@ class sistemaV:
                 return masc.verLista_Medicamentos() 
         return None
     
+    def eliminarMedicamento(self,historia,medicamento):
+        for mascota in self.__lista_mascotas:
+            if mascota.verHistoria() == historia:
+                lista_actual = mascota.verLista_Medicamentos()
+                for med in lista_actual:
+                    if med.verNombre().lower() == medicamento.lower():
+                        lista_actual.remove(med)
+                        return True
+                print(f"El medicamento {medicamento} no se encuentra en la lista de medicamentos de la mascota con historia {historia}.")
+                return False
+        print(f"La mascota con historia {historia} no se encuentra en el sistema.")
+        return False
+    
     #Completamente opcional
     def verCantitadCaninos(self):
         return len(self.__caninos)
@@ -126,7 +139,8 @@ def main():
                        \n5- Eliminar mascota 
                        \n6- Ver cantidad de caninos
                        \n7- Ver cantidad de felinos
-                       \n8- Salir 
+                       \n8- Eliminar medicamento de una mascota
+                       \n9- Salir 
                        \nUsted ingresó la opción: ''' ))
         if menu==1: # Ingresar una mascota 
             if servicio_hospitalario.verNumeroMascotas() >= 10:
@@ -213,7 +227,16 @@ def main():
             cantidad_felinos = servicio_hospitalario.verCantitadFelinos()
             print(f"Cantidad de felinos en el sistema: {cantidad_felinos}")
         
-        elif menu==8:
+        elif menu == 8:
+            historia = int(input("Ingrese la historia clínica de la mascota: "))
+            medicamento = input("Ingrese el nombre del medicamento a eliminar: ")
+            resultado_operacion = servicio_hospitalario.eliminarMedicamento(historia, medicamento)
+            if resultado_operacion == True:
+                print(f"Medicamento {medicamento} eliminado con éxito de la mascota con historia {historia}.")
+            else:
+                print(f"No se pudo eliminar el medicamento {medicamento} de la mascota con historia {historia}.")
+
+        elif menu==9:
             print("Usted ha salido del sistema de servicio de hospitalización...")
             break
         
